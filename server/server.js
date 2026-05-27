@@ -9,6 +9,7 @@ app.use(express.json());
 app.get("/",(req,res)=>{
     res.send({message: "hello BIjay"})
 })
+
 app.listen(5000, () => {
   console.log("Server Running");
 });
