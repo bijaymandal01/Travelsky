@@ -1,9 +1,24 @@
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
+import Home from "./Pages/Home";
+
 function App() {
+
   return (
-    <div className="bg-blue-500 text-white p-10 text-4xl">
-      TravelSky
-    </div>
-  )
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route path="/" element={<Home />} />
+
+      </Routes>
+
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
