@@ -19,7 +19,11 @@ const getEntireRoute = async (
             }
         )
 
-        return directionApiResponse.data.features[0]
+        return {
+            distance : directionApiResponse.properties.summary.distance,
+            duration : directionApiResponse.properties.summary.duration,
+            coordinates : directionApiResponse.geometry.coordinates,
+        }
 
 
 };
