@@ -318,6 +318,7 @@ const getTravelWeather = async (req, res) => {
                 hour:"2-digit",
                 minute:"2-digit",
               }
+                
             )
           });
         }
