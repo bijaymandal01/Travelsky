@@ -24,7 +24,7 @@ const getTravelWeather = async (req, res) => {
     console.log("start "+start.lon +" "+ start.lat);
     console.log("end "+end.lon +" "+ end.lat);
 
-{/* //modules are created no need of this code anymore.
+/* //modules are created no need of this code anymore.
 
      const geocodeResponseFROM = await axios.get(
       `https://api.openrouteservice.org/geocode/search`,
@@ -51,7 +51,7 @@ const getTravelWeather = async (req, res) => {
       }
     );
 
-*/}
+*/
 
     //.............................................................
     //storing coordinates of From and TO in array of object
@@ -70,7 +70,7 @@ const getTravelWeather = async (req, res) => {
       },
     ];
 
-{/*
+/*
 
   console.log(locations[0])
   console.log(locations[1])
@@ -80,7 +80,7 @@ const getTravelWeather = async (req, res) => {
   
   console.log(locations[1].lon)
   console.log(locations[1].lat)
-  */}
+  */
   
 //......................................................
 //using direction api to get data 
@@ -92,12 +92,12 @@ const getTravelWeather = async (req, res) => {
       end
     )
 
-{/* //modules are created no need of this code anymore.
+/* //modules are created no need of this code anymore.
 
   const directionApiResponse = 
   await axios.get(`https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTE_API}&start=${locations[0].lon},${locations[0].lat}&end=${locations[1].lon},${locations[1].lat}`)
   
-  */}
+  */
 
   const distanceAndDurationCoordinatesARRAY = [
           {
@@ -130,7 +130,7 @@ const getTravelWeather = async (req, res) => {
     
 //eta generation with departure time give destination eta
 
-{/*
+/*
   const departureTime = new Date(`${date}T${time}:00`);
   
   const arrivalTime = new Date(
@@ -146,7 +146,7 @@ const getTravelWeather = async (req, res) => {
     minute: "2-digit"
   });
   
-  */}
+  */
   const {finalETA} = getfinalETA(
     date,
     time,
@@ -158,7 +158,7 @@ const getTravelWeather = async (req, res) => {
   // finding checkpoints of major city/districts
   //.................................................................
 
-    {/*
+    /*
   const maxCheckpoints = 15;
   
   let intervalKM = Math.ceil(distance / maxCheckpoints); 
@@ -232,7 +232,7 @@ const getTravelWeather = async (req, res) => {
   console.log(checkpointDistanceKm)
   console.log( checkpointTimeMinutes)
   
-*/}
+*/
 
       const joiningCoordinatesWithDistance = generateCheckpoints(
           distanceAndDurationCoordinatesARRAY[0].duration,
@@ -242,7 +242,7 @@ const getTravelWeather = async (req, res) => {
   // console.log("joiningCoordinatesWithDistance");
   // console.log(joiningCoordinatesWithDistance);
 
- {/*
+ /*
   const joiningCoordinatesWithDistance = checkpointCoordinates.map(([lon,lat],index)=>({
     lon,
     lat,
@@ -251,7 +251,7 @@ const getTravelWeather = async (req, res) => {
   }))
   console.log(joiningCoordinatesWithDistance);
   
-  */}     
+  */   
       
 
 //...............................................................................
@@ -268,7 +268,7 @@ const getTravelWeather = async (req, res) => {
   )
 
 
-  {/*
+  /*
         const intermediateCities = [];
 
         for (let i = 0; i < joiningCoordinatesWithDistance.length; i++) {
@@ -338,7 +338,7 @@ const getTravelWeather = async (req, res) => {
             uniqueCities[uniqueCities.length-1].timeTaken.hrs=duration.hrs;
             uniqueCities[uniqueCities.length-1].timeTaken.min=duration.min;
             uniqueCities[uniqueCities.length-1].ETA=finalETA;
-*/}
+*/
 
           console.log(uniqueCities);
         
