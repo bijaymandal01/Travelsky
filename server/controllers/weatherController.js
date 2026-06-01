@@ -1,4 +1,9 @@
 const axios = require("axios");
+const getCoordinatesOfPointAPointB = require("../services/geocodeService");
+const getEntireRoute = require("../services/directionsService");
+const getfinalETA = require("../services/etaServices");
+const generateCheckpoints = require("../services/checkpointServices");
+const getreverseGeocode = require("../services/reverseGeocode");
 require("dotenv").config();
 
 const getTravelWeather = async (req, res) => {
@@ -8,14 +13,20 @@ const getTravelWeather = async (req, res) => {
 
     const { from, to, date, time } = req.body;
 
-    console.log(from);
-    console.log(to);
+    // console.log(from);
+    // console.log(to);
 
 //...............................................................
     //finding coodinates of start(from) and destination(to) 
 //.............................................................
+    const start= await getCoordinatesOfPointAPointB(from)
+    const end= await getCoordinatesOfPointAPointB(to)
+    console.log("start "+start.lon +" "+ start.lat);
+    console.log("end "+end.lon +" "+ end.lat);
 
-    const geocodeResponseFROM = await axios.get(
+{/* //modules are created no need of this code anymore.
+
+     const geocodeResponseFROM = await axios.get(
       `https://api.openrouteservice.org/geocode/search`,
       {
         params: {
@@ -40,6 +51,8 @@ const getTravelWeather = async (req, res) => {
       }
     );
 
+*/}
+
     //.............................................................
     //storing coordinates of From and TO in array of object
     //............................................................
@@ -47,47 +60,61 @@ const getTravelWeather = async (req, res) => {
     const locations = [
       {
         name: from,
-        lon: geocodeResponseFROM.data.features[0].geometry.coordinates[0],
-        lat:geocodeResponseFROM.data.features[0].geometry.coordinates[1],
+        lon:start.lon,
+        lat:start.lat,
       },
       {
         name: to,
-        lon:  geocodeResponseTO.data.features[0].geometry.coordinates[0],
-        lat:  geocodeResponseTO.data.features[0].geometry.coordinates[1],
+        lon:  end.lon,
+        lat:  end.lat,
       },
     ];
 
-    console.log(locations[0])
-    console.log(locations[1])
+{/*
 
-    console.log(locations[0].lon)
-    console.log(locations[0].lat)
-
-    console.log(locations[1].lon)
-    console.log(locations[1].lat)
-
+  console.log(locations[0])
+  console.log(locations[1])
+  
+  console.log(locations[0].lon)
+  console.log(locations[0].lat)
+  
+  console.log(locations[1].lon)
+  console.log(locations[1].lat)
+  */}
+  
 //......................................................
 //using direction api to get data 
 // like distance, duration, geomerty, & coordinates 
 //.......................................................
-    const directionApiResponse = 
-        await axios.get(`https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTE_API}&start=${locations[0].lon},${locations[0].lat}&end=${locations[1].lon},${locations[1].lat}`)
 
-      const distanceAndDuration = [
+    const distanceDurationCoordinates = await  getEntireRoute(
+      start,
+      end
+    )
+
+{/* //modules are created no need of this code anymore.
+
+  const directionApiResponse = 
+  await axios.get(`https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTE_API}&start=${locations[0].lon},${locations[0].lat}&end=${locations[1].lon},${locations[1].lat}`)
+  
+  */}
+
+  const distanceAndDurationCoordinatesARRAY = [
           {
-            distance: directionApiResponse.data.features[0].properties.summary.distance,
-            duration:directionApiResponse.data.features[0].properties.summary.duration,
+            distance: distanceDurationCoordinates.distance,
+            duration:distanceDurationCoordinates.duration,
+            coordinates: distanceDurationCoordinates.coordinates,
           },
         ];
-    console.log(distanceAndDuration[0])
+    // console.log(distanceAndDuration[0])
 
     //...........................................................
     //conversion of distance to km and duration to hrs
     //............................................................
-    const distance = ((distanceAndDuration[0].distance)/1000).toFixed(2)
+    const distance = Number(((distanceAndDurationCoordinatesARRAY[0].distance)/1000).toFixed(2))
     console.log(distance + " km")
     
-    const totalSeconds = distanceAndDuration[0].duration + (3 * 3600); // add 3 hrs
+    const totalSeconds = distanceAndDurationCoordinatesARRAY[0].duration + (3 * 3600); // add 3 hrs
 
     const duration = {
       hrs: Math.floor(totalSeconds / 3600),
@@ -98,44 +125,53 @@ const getTravelWeather = async (req, res) => {
     
 
 
-    const speed = (distance*60*60)/distanceAndDuration[0].duration
-    console.log("speed " + speed );
+    const speed = (distance*60*60)/distanceAndDurationCoordinatesARRAY[0].duration
+    // console.log("speed " + speed );
     
-    //eta generation with departure time give destination eta
+//eta generation with departure time give destination eta
+
+{/*
+  const departureTime = new Date(`${date}T${time}:00`);
+  
+  const arrivalTime = new Date(
+    departureTime.getTime() +
+    (duration.hrs * 60 + duration.min) * 60 * 1000
+  );
+  
+  const finalETA = arrivalTime.toLocaleString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+  
+  */}
+  const {finalETA} = getfinalETA(
+    date,
+    time,
+    distance,
+    distanceAndDurationCoordinatesARRAY[0].duration,
     
-    const departureTime = new Date(`${date}T${time}:00`);
+  )
+  //..................................................................
+  // finding checkpoints of major city/districts
+  //.................................................................
 
-    const arrivalTime = new Date(
-      departureTime.getTime() +
-      (duration.hrs * 60 + duration.min) * 60 * 1000
-    );
-
-    const finalETA = arrivalTime.toLocaleString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-
-    //..................................................................
-    // finding checkpoints of major city/districts
-    //.................................................................
-
-        const maxCheckpoints = 15;
-
-      let intervalKM = Math.ceil(distance / maxCheckpoints); 
-          console.log("intervalKM "+intervalKM)
-
-    const numberOfCheckpoints = Math.floor(distance/intervalKM);
-        console.log("numberOfCheckpoints "+numberOfCheckpoints)
-
-    const checkpointCoordinates = [];
-    const checkpointDistanceKm =[];
+    {/*
+  const maxCheckpoints = 15;
+  
+  let intervalKM = Math.ceil(distance / maxCheckpoints); 
+  // console.log("intervalKM "+intervalKM)
+  
+  const numberOfCheckpoints = Math.floor(distance/intervalKM);
+  // console.log("numberOfCheckpoints "+numberOfCheckpoints)
+  
+  const checkpointCoordinates = [];
+  const checkpointDistanceKm =[];
     const checkpointTimeMinutes  = [];
-
-    const allCoordinates = directionApiResponse.data.features[0].geometry.coordinates;
+    
+    const allCoordinates = distanceAndDurationCoordinatesARRAY[0].coordinates;
     let allintervalKM = 0;
     let allintervalTIME =0;
     
@@ -144,77 +180,100 @@ const getTravelWeather = async (req, res) => {
     )
     checkpointDistanceKm.push(0)
     checkpointTimeMinutes.push(0);
-
-    const totalDurationMinutes =
-  (distanceAndDuration[0].duration / 60) + 180; // your +3 hrs
-
-    const intervalTimeMinutes =
-      totalDurationMinutes / (numberOfCheckpoints + 1);
-
-    let accumulatedTime = 0;
-
-
-//...........................................................................
-// calculating index of checkpoints by coordinates
-//................................................................
-
-    for(let i = 1;i<=numberOfCheckpoints;i++){
-      const lengthOfCoordinates =allCoordinates.length;
-      
-     const indexOfCheckpoints = Math.floor(
-          (i * lengthOfCoordinates) /(numberOfCheckpoints + 1)
-        );
-        
-        allintervalKM = allintervalKM + intervalKM ; 
-        accumulatedTime += intervalTimeMinutes;
-
-
-        checkpointCoordinates.push(
-          allCoordinates[indexOfCheckpoints]
-        )
-        checkpointDistanceKm.push(
-          allintervalKM
-        )
-        checkpointTimeMinutes.push(
-          Math.round(accumulatedTime)
-        )
-
-        
-      };
-      
-        checkpointCoordinates.push(
-          allCoordinates[allCoordinates.length - 1]
-        );
-
-        checkpointDistanceKm.push(distance);
-
-        checkpointTimeMinutes.push(
-          Math.round(totalDurationMinutes)
-        );
     
-      console.log(checkpointCoordinates)
-      console.log(checkpointDistanceKm)
-      console.log( checkpointTimeMinutes)
+    const totalDurationMinutes =
+    (distanceAndDurationCoordinatesARRAY[0].duration / 60) + 180; // your +3 hrs
+    
+    const intervalTimeMinutes =
+    totalDurationMinutes / (numberOfCheckpoints + 1);
+    
+    let accumulatedTime = 0;
+    
+    
+    //...........................................................................
+    // calculating index of checkpoints by coordinates
+    //...........................................................................
+  for(let i = 1;i<=numberOfCheckpoints;i++){
+    const lengthOfCoordinates =allCoordinates.length;
+    
+    const indexOfCheckpoints = Math.floor(
+      (i * lengthOfCoordinates) /(numberOfCheckpoints + 1)
+    );
+    
+    allintervalKM = allintervalKM + intervalKM ; 
+    accumulatedTime += intervalTimeMinutes;
+    
+        
+    checkpointCoordinates.push(
+      allCoordinates[indexOfCheckpoints]
+    )
+    checkpointDistanceKm.push(
+      allintervalKM
+    )
+    checkpointTimeMinutes.push(
+      Math.round(accumulatedTime)
+    )
+    
+    
+  };
+  
+  checkpointCoordinates.push(
+    allCoordinates[allCoordinates.length - 1]
+  );
+  
+  checkpointDistanceKm.push(distance);
+  
+  checkpointTimeMinutes.push(
+    Math.round(totalDurationMinutes)
+  );
+  
 
-      const joiningCoordinatesWithDistance = checkpointCoordinates.map(([lon,lat],index)=>({
-        lon,
-        lat,
-        distanceKM : checkpointDistanceKm[index],
-        timeMinutes: checkpointTimeMinutes[index],
-      }))
-      console.log(joiningCoordinatesWithDistance);
+  console.log(checkpointCoordinates)
+  console.log(checkpointDistanceKm)
+  console.log( checkpointTimeMinutes)
+  
+*/}
 
+      const joiningCoordinatesWithDistance = generateCheckpoints(
+          distanceAndDurationCoordinatesARRAY[0].duration,
+          Math.floor(distanceAndDurationCoordinatesARRAY[0].distance/1000),
+          distanceAndDurationCoordinatesARRAY[0].coordinates,
+      )
+  // console.log("joiningCoordinatesWithDistance");
+  // console.log(joiningCoordinatesWithDistance);
+
+ {/*
+  const joiningCoordinatesWithDistance = checkpointCoordinates.map(([lon,lat],index)=>({
+    lon,
+    lat,
+    distanceKM : checkpointDistanceKm[index],
+    timeMinutes: checkpointTimeMinutes[index],
+  }))
+  console.log(joiningCoordinatesWithDistance);
+  
+  */}     
       
 
 //...............................................................................
 // Reverse geocode to find cities by coordinates
 //...........................................................................
+ 
+  const uniqueCities = await getreverseGeocode(
+    joiningCoordinatesWithDistance,
+    date,
+    time,
+    distance, 
+    duration,
+    finalETA,
+  )
 
+
+  {/*
         const intermediateCities = [];
 
         for (let i = 0; i < joiningCoordinatesWithDistance.length; i++) {
             const {lon, lat, distanceKM,timeMinutes} = joiningCoordinatesWithDistance[i];
-            console.log(lon + " "+ lat+" "+distanceKM)
+            // console.log(lon + " "+ lat+" "+distanceKM)
 
             const reverseGeocode = 
               await axios.get(
@@ -234,7 +293,7 @@ const getTravelWeather = async (req, res) => {
                 }
               )
               // console.log(reverseGeocode.data.address.state_district)
-              const city = reverseGeocode.data.address.state_district;
+              const city = reverseGeocode.data.address.state_district ||reverseGeocode.data.address.city;
               const departureDateTime =new Date(`${date}T${time}:00`);
 
               const eta = new Date( 
@@ -246,7 +305,7 @@ const getTravelWeather = async (req, res) => {
             distanceKM,
             lon,
             lat,
-            finalETA :finalETA,
+            finalETA,
             timeTaken : {
               hrs : Math.floor(timeMinutes / 60),
               min : timeMinutes % 60,
@@ -279,7 +338,7 @@ const getTravelWeather = async (req, res) => {
             uniqueCities[uniqueCities.length-1].timeTaken.hrs=duration.hrs;
             uniqueCities[uniqueCities.length-1].timeTaken.min=duration.min;
             uniqueCities[uniqueCities.length-1].ETA=finalETA;
-
+*/}
 
           console.log(uniqueCities);
         
@@ -287,11 +346,12 @@ const getTravelWeather = async (req, res) => {
       return res.status(200).json({
         distance,
         duration,
-        finalETA,
+        finalETA ,
         intermediateCities: uniqueCities
     });
   } catch (error) {
   console.log("MESSAGE:", error.message);
+  console.log(error.config?.url);
 
   return res.status(
     error.response?.status || 500
