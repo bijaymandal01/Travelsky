@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const {getTravelWeather} = require("../controllers/weatherController");
+const {getTravelWeather,} = require("../controllers/weatherController");
 
 router.post("/travel",getTravelWeather);
 
