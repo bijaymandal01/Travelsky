@@ -4,6 +4,7 @@ const getEntireRoute = require("../services/directionsService");
 const getfinalETA = require("../services/etaServices");
 const generateCheckpoints = require("../services/checkpointServices");
 const getreverseGeocode = require("../services/reverseGeocode");
+const getWeather = require("../services/weatherService");
 require("dotenv").config();
 
 const getTravelWeather = async (req, res) => {
@@ -342,6 +343,12 @@ const getTravelWeather = async (req, res) => {
 */
 
           console.log(uniqueCities);
+
+          const weatherDATA = getWeather(
+            date,
+            time,
+          )
+          console.log(weatherDATA)
         
     
       return res.status(200).json({

@@ -1,7 +1,12 @@
 const axios = require("axios");
 
-const getWeather = ()=>{
+const getWeather = (
+            date,
+            time,
+
+)=>{
     try{
+        console.log("main")
 
     }catch(error){
         //code of fallback
@@ -9,3 +14,4 @@ const getWeather = ()=>{
 
 
 } 
+module.exports = getWeather;
