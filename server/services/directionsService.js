@@ -6,7 +6,6 @@ const getEntireRoute = async (
     end
 )=>{
 try{
-
     const directionApiResponse = 
     await axios.get(` https://router.project-osrm.org/route/v1/driving/${start.lon},${start.lat};${end.lon},${end.lat}`,
         {
@@ -27,6 +26,8 @@ try{
 
     console.log(` distance api failed. switching to fallback`)
 
+
+
      const directionApiResponse = 
     await axios.get(`https://api.openrouteservice.org/v2/directions/driving-car`,
         {
@@ -38,7 +39,7 @@ try{
             timeout:6000,
         }
     )
-    
+ 
     return {
         distance : directionApiResponse.data.features[0].properties.summary.distance,
         duration : directionApiResponse.data.features[0].properties.summary.duration,
