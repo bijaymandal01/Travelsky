@@ -3,8 +3,8 @@ const generateCheckpoints  =(
     distance,
     coordinates,
 )=>{
-    const maxCheckpoints = 15;
-
+    const maxCheckpoints = 20;
+  console.log(distance)
       let intervalKM = Math.ceil(distance / maxCheckpoints); 
           console.log("intervalKM "+intervalKM)
 
@@ -80,7 +80,9 @@ const generateCheckpoints  =(
         distanceKM : (checkpointDistanceKm[index]),
         timeMinutes: checkpointTimeMinutes[index],
       }))
-
+//...................................................................
+//          
+//...................................................................
       return joiningCoordinatesWithDistance
 
       

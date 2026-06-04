@@ -236,10 +236,14 @@ const getTravelWeather = async (req, res) => {
 */
 
       const joiningCoordinatesWithDistance = generateCheckpoints(
-          distanceAndDurationCoordinatesARRAY[0].duration,
-          Math.floor(distanceAndDurationCoordinatesARRAY[0].distance/1000),
-          distanceAndDurationCoordinatesARRAY[0].coordinates,
-      )
+        distanceAndDurationCoordinatesARRAY[0].duration,
+        Math.floor(
+          distanceAndDurationCoordinatesARRAY[0].distance / 1000
+        ),
+        distanceAndDurationCoordinatesARRAY[0].coordinates,
+        date,   // NEW
+        time    // NEW
+      );  
   // console.log("joiningCoordinatesWithDistance");
   // console.log(joiningCoordinatesWithDistance);
 
@@ -342,21 +346,36 @@ const getTravelWeather = async (req, res) => {
             uniqueCities[uniqueCities.length-1].ETA=finalETA;
 */
 
-          console.log(uniqueCities);
+          // console.log(uniqueCities);
+          
 
-          const weatherDATA = getWeather(
+          const weatherDATA = await getWeather(
             date,
             time,
+            uniqueCities
           )
           console.log(weatherDATA)
-        
+            const checkpointsWithWeather = uniqueCities.map(
+              (checkpoint, index) => ({
+                ...checkpoint,
+                weather: weatherDATA[index] || null,
+              })
+            );    
+           const weathersInYourRoute = {
+            route:{
+              start: from,
+              destination:to,
+              distance,
+              duration,
+              
+            },
+            checkpoints:
+              checkpointsWithWeather,
+          }
+          
+    console.log(weathersInYourRoute);
     
-      return res.status(200).json({
-        distance,
-        duration,
-        finalETA ,
-        intermediateCities: uniqueCities
-    });
+      return res.status(200).json({weathersInYourRoute});
   } catch (error) {
   console.log("MESSAGE:", error.message);
   console.log(error.config?.url);

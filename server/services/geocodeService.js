@@ -1,35 +1,10 @@
 const axios = require("axios");
+const apiLogger = require("../utils/apiLogger");
 require("dotenv").config()
 
 const getCoordinatesOfPointAPointB = async(place)=>{
     try{
-
-                    const geocodeResponse= await axios.get(
-            `https://nominatim.openstreetmap.org/search`,
-            {
-                params :{
-                    q : place,
-                    format: "jsonv2",
-                    limit: 1,
-                } ,
-                headers: {
-                    "User-Agent": "travelsky/1.0",
-                    "Accept": "application/json",
-                },
-                timeout :6000,            }
-        )
-        return {
-            lon :Number(geocodeResponse.data[0].lon),
-            lat :Number(geocodeResponse.data[0].lat)
-        }
-            
-        
-        
-    }catch(error){
-
-        console.log(`some services is slow switching to fallback `)
-
-                const geocodeResponse = await axios.get(
+            const geocodeResponse = await axios.get(
                 `https://api.openrouteservice.org/geocode/search`,
                 {
                     params: {
@@ -41,10 +16,49 @@ const getCoordinatesOfPointAPointB = async(place)=>{
                     },
                 }
             );
+
             return {
                 lon : geocodeResponse.data.features[0].geometry.coordinates[0],
                 lat : geocodeResponse.data.features[0].geometry.coordinates[1]
         };
+
+
+            
+        
+        
+    }catch(error){
+
+        console.log(`openrouteservice is slow. switching to fallback `)
+
+        try {
+            const geocodeResponse= await axios.get(
+            `https://nominatim.openstreetmap.org/search`,
+            {
+                params :{
+                    q : place,
+                    format: "jsonv2",
+                    limit: 1,
+                } ,
+                headers: {
+                    "User-Agent": "travelsky/1.0",
+                    "Accept": "application/json",
+                },
+                timeout :6000,           
+             }
+        )
+        
+
+        return {
+            lon :Number(geocodeResponse.data[0].lon),
+            lat :Number(geocodeResponse.data[0].lat)
+        }
+            
+        } catch (error) {
+            console.log(`nominatim failed.`)
+            
+        }
+
+
 
     }
 };
