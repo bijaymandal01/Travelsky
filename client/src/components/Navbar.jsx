@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function Navbar() {
 
   return (
@@ -14,8 +16,8 @@ function Navbar() {
 
       <div className="flex gap-2">
 
-        <p className="p">Home</p>
-        <p className="p">About</p>
+        <NavLink to="/" >Home</NavLink>
+        <NavLink to="/results" >result</NavLink>
 
       </div>
 

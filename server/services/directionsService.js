@@ -12,7 +12,8 @@ try{
             params: {
                 overview: "full",
                 geometries: "geojson"
-            }
+            },
+            timeout:1000,
         }
     )
     return {
@@ -28,17 +29,26 @@ try{
 
 
 
-     const directionApiResponse = 
-    await axios.get(`https://api.openrouteservice.org/v2/directions/driving-car`,
+        const directionApiResponse =
+        await axios.post(
+        "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
         {
-            params:{
-                api_key: process.env.OPENROUTE_API,
-                start : `${start.lon},${start.lat}`,
-                end:`${end.lon},${end.lat}`,
+            coordinates: [
+            [start.lon, start.lat],
+            [end.lon, end.lat]
+            ],
+            options: {
+            avoid_borders: "all"
+            }
+        },
+        {
+            headers: {
+            Authorization: process.env.OPENROUTE_API,
+            "Content-Type": "application/json"
             },
-            timeout:6000,
+            timeout: 10000,
         }
-    )
+        )
  
     return {
         distance : directionApiResponse.data.features[0].properties.summary.distance,

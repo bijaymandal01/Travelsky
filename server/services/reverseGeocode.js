@@ -92,6 +92,7 @@ const getreverseGeocode = async (
                   lat,
                   lon,
                   addressdetails: 1,
+                  "accept-language": "en",
                 },
                 headers: {
                   "User-Agent": "route-planner/1.0",
