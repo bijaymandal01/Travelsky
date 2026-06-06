@@ -53,7 +53,7 @@ const getWeather = async (
                     uvIndex: matchingHour?.uvindex,
                 };
 
-        }) // <-- NEW
+        })
     )
 );
         const successfulResults = weatherResults
@@ -72,7 +72,7 @@ const getWeather = async (
                 console.log(result.reason?.message);
             });
         }
-        // console.log(successfulResults)
+        console.log(successfulResults)
 
         return successfulResults;
 

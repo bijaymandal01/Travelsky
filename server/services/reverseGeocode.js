@@ -82,7 +82,7 @@ const getreverseGeocode = async (
           distanceKM,
           timeMinutes
         }) => {
-
+  
           const reverseGeocode =
             await axios.get(
               "https://nominatim.openstreetmap.org/reverse",
@@ -98,10 +98,9 @@ const getreverseGeocode = async (
                   "User-Agent": "route-planner/1.0",
                   Accept: "application/json",
                 },
-                timeout: 3000,
+                timeout: 10000,
               }
             );
-
           const city =
             reverseGeocode.data.address
               ?.state_district ||
@@ -118,9 +117,10 @@ const getreverseGeocode = async (
             distanceKM,
             timeMinutes
           );
+        
         }
       )
-
+      
     );
 
     const intermediateCities = results
@@ -178,6 +178,7 @@ const getreverseGeocode = async (
                   "User-Agent": "route-planner/1.0",
                   Accept: "application/json",
                 },
+                timeout:3000,
               }
             );
 
