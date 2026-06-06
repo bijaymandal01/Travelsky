@@ -13,7 +13,6 @@ try{
                 overview: "full",
                 geometries: "geojson"
             },
-            timeout:1000,
         }
     )
     return {
@@ -46,9 +45,8 @@ try{
             Authorization: process.env.OPENROUTE_API,
             "Content-Type": "application/json"
             },
-            timeout: 10000,
         }
-        )
+    )
  
     return {
         distance : directionApiResponse.data.features[0].properties.summary.distance,

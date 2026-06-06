@@ -81,7 +81,7 @@ const RouteInfo = ({ routeSummary }) => {
               {card.title}
             </p>
 
-            <p className="font-semibold text-slate-800 text-sm md:text-base break-words">
+            <p className="font-semibold text-slate-800 text-sm md:text-base ">
               {card.value}
             </p>
           </div>
