@@ -14,6 +14,7 @@ const getCoordinatesOfPointAPointB = async(place)=>{
                         layers: "venue,address",
                         size: 1,
                     },
+                    timeout : 3000,
                 }
             );
 
@@ -43,7 +44,7 @@ const getCoordinatesOfPointAPointB = async(place)=>{
                     "User-Agent": "travelsky/1.0",
                     "Accept": "application/json",
                 },
-                timeout :6000,           
+                timeout :3000,           
              }
         )
         

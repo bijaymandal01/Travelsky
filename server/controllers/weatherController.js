@@ -354,7 +354,7 @@ const getTravelWeather = async (req, res) => {
             time,
             uniqueCities
           )
-          console.log(weatherDATA)
+          // console.log(weatherDATA)
             const checkpointsWithWeather = uniqueCities.map(
               (checkpoint, index) => ({
                 ...checkpoint,
@@ -367,6 +367,9 @@ const getTravelWeather = async (req, res) => {
               destination:to,
               distance,
               duration,
+              departureDate:date,
+              departureTime:time,
+              finalETA,
               
             },
             checkpoints:

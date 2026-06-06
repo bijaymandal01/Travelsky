@@ -1,4 +1,5 @@
 const axios = require("axios");
+const pLimit = require("p-limit").default;
 const apiLogger = require("../utils/apiLogger");
 require("dotenv").config();
 
@@ -9,11 +10,12 @@ const getWeather = async (
 ) => {
 
     try {
+            const limit = pLimit(3);
 
         const weatherResults = await Promise.allSettled(
 
-            uniqueCities.map(async (city) => {
-
+            uniqueCities.map( (city) =>
+                limit(async () => {
                 const response = await axios.get(
                     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city.city}/${city.vcDateTime}`,
                     {
@@ -21,7 +23,7 @@ const getWeather = async (
                             key: process.env.VISUALCROSSING_KEY,
                             unitGroup: "metric"
                         },
-                        timeout:3000,
+                       
                     }
                 );
 
@@ -51,10 +53,9 @@ const getWeather = async (
                     uvIndex: matchingHour?.uvindex,
                 };
 
-            })
-
-        );
-
+        }) // <-- NEW
+    )
+);
         const successfulResults = weatherResults
             .filter(result => result.status === "fulfilled")
             .map(result => result.value);
