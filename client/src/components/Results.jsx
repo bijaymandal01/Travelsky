@@ -82,14 +82,14 @@ const Results = () => {
             <JourneyTimeline routeSummary={route.weathersInYourRoute} />
           </div>
 
-          {/* Optional Components */}
+          {/* // Optional Components
           <div className="col-span-12">
             <RiskChart routeSummary={route.weathersInYourRoute} />
           </div>
 
           <div className="col-span-12">
             <CheckpointTable routeSummary={route.weathersInYourRoute} />
-          </div>
+          </div> */}
 
         </div>
       </div>
