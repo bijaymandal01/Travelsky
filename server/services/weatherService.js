@@ -23,6 +23,7 @@ const getWeather = async (
                             key: process.env.VISUALCROSSING_KEY,
                             unitGroup: "metric"
                         },
+                        timeout:10000,
                        
                     }
                 );
@@ -75,6 +76,7 @@ const getWeather = async (
         console.log(successfulResults)
 
         return successfulResults;
+
 
     } catch (error) {
 
