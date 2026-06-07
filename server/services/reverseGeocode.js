@@ -98,7 +98,7 @@ const getreverseGeocode = async (
                   "User-Agent": "route-planner/1.0",
                   Accept: "application/json",
                 },
-                timeout: 10000,
+                timeout: 6000,
               }
             );
           const city =
