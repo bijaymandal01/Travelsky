@@ -94,8 +94,7 @@ const TravelScoreCard = ({ routeSummary }) => {
     Math.min(100, Math.round(score))
   );
 
-  const status =
-    score >= 85
+  const status = score >= 85
       ? "Excellent"
       : score >= 70
       ? "Good"

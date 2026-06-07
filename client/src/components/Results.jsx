@@ -69,11 +69,11 @@ const Results = () => {
           </div>
 
           {/* Second Row */}
-          <div className="col-span-12 lg:col-span-8">
+         <div className="col-span-12">
             <WeatherHighlights routeSummary={route.weathersInYourRoute} />
           </div>
 
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12">
             <ConditionsOverview routeSummary={route.weathersInYourRoute} />
           </div>
 
