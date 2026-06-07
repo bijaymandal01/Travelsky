@@ -21,65 +21,122 @@ const TravelScoreCard = ({ routeSummary }) => {
     );
   }
 
-  const avgRain =
-    weatherData.reduce(
-      (sum, cp) =>
-        sum + (cp.weather.precipitationProbability || 0),
-      0
-    ) / weatherData.length;
-
-  const avgVisibility =
-    weatherData.reduce(
-      (sum, cp) =>
-        sum + (cp.weather.visibility || 0),
-      0
-    ) / weatherData.length;
-
-  const avgWind =
-    weatherData.reduce(
-      (sum, cp) =>
-        sum + (cp.weather.windSpeed || 0),
-      0
-    ) / weatherData.length;
-
   let score = 100;
 
-  score -= avgRain * 0.5;
+  let severeCount = 0;
+  let moderateCount = 0;
 
-  if (avgVisibility < 10) score -= 15;
-  if (avgVisibility < 5) score -= 25;
+  weatherData.forEach((cp) => {
+    const rain =
+      cp.weather.precipitationProbability || 0;
 
-  if (avgWind > 25) score -= 15;
-  if (avgWind > 40) score -= 25;
+    const visibility =
+      cp.weather.visibility || 25;
 
-  score = Math.max(0, Math.round(score));
+    const wind =
+      cp.weather.windSpeed || 0;
+
+    const temperature =
+      cp.weather.temperature || 25;
+
+    const condition =
+      cp.weather.conditions?.toLowerCase() || "";
+
+    // ===== Severe Conditions =====
+
+    if (rain >= 80) severeCount++;
+
+    if (visibility < 2) severeCount++;
+    else if (visibility < 10) moderateCount++;
+
+    if (wind > 50) severeCount++;
+    else if (wind > 30) moderateCount++;
+
+    if (
+      condition.includes("storm") ||
+      condition.includes("thunder")
+    ) {
+      severeCount++;
+    }
+
+    // ===== Heat Risk =====
+
+    if (temperature > 45) {
+      score -= 3;
+    } else if (temperature > 42) {
+      score -= 2;
+    }
+
+    // ===== Moderate Rain =====
+
+    if (rain >= 40 && rain < 80) {
+      moderateCount++;
+    }
+  });
+
+  // Route-wide penalties
+
+  score -= severeCount * 8;
+
+  score -= moderateCount * 4;
+
+  // Percentage of affected checkpoints
+
+  const riskRatio =
+    (severeCount + moderateCount) /
+    weatherData.length;
+
+  if (riskRatio > 0.5) score -= 10;
+  else if (riskRatio > 0.3) score -= 5;
+
+  score = Math.max(
+    0,
+    Math.min(100, Math.round(score))
+  );
 
   const status =
-    score >= 80
+    score >= 85
       ? "Excellent"
-      : score >= 60
+      : score >= 70
       ? "Good"
+      : score >= 55
+      ? "Moderate Risk"
       : score >= 40
-      ? "Moderate"
-      : "Poor";
+      ? "High Risk"
+      : "Avoid Travel";
 
   const color =
-    score >= 80
+    score >= 85
       ? "text-green-500"
-      : score >= 60
+      : score >= 70
       ? "text-blue-500"
-      : score >= 40
+      : score >= 55
       ? "text-yellow-500"
+      : score >= 40
+      ? "text-orange-500"
       : "text-red-500";
 
   const ringColor =
-    score >= 80
+    score >= 85
       ? "border-green-500"
-      : score >= 60
+      : score >= 70
       ? "border-blue-500"
-      : score >= 40
+      : score >= 55
       ? "border-yellow-500"
+      : score >= 40
+      ? "border-orange-500"
       : "border-red-500";
+
+  const recommendation =
+    score >= 85
+      ? "Recommended for Travel"
+      : score >= 70
+      ? "Generally Safe Route"
+      : score >= 55
+      ? "Travel with Caution"
+      : score >= 40
+      ? "High Weather Risk"
+      : "Avoid Travel If Possible";
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
@@ -94,7 +151,9 @@ const TravelScoreCard = ({ routeSummary }) => {
           className={`h-20 w-20 rounded-full border-4 ${ringColor}
           flex items-center justify-center`}
         >
-          <span className={`text-2xl font-bold ${color}`}>
+          <span
+            className={`text-2xl font-bold ${color}`}
+          >
             {score}
           </span>
         </div>
@@ -103,12 +162,8 @@ const TravelScoreCard = ({ routeSummary }) => {
           {status}
         </p>
 
-        <p className="text-xs text-slate-500 text-center mt-1 mb-5 ">
-          {score >= 80
-            ? "Recommended for Travel"
-            : score >= 60
-            ? "Travel with Caution"
-            : "Check Conditions Before Departure"}
+        <p className="text-xs text-slate-500 text-center mt-1 mb-5">
+          {recommendation}
         </p>
 
       </div>
