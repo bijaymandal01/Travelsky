@@ -14,7 +14,7 @@ const JourneyTimeline = ({ routeSummary }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+    <div className="bg-white rounded-2xl border border-black shadow-sm p-5">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">

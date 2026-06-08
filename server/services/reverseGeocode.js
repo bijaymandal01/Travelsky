@@ -151,9 +151,9 @@ const getreverseGeocode = async (
   } catch (error) {
 
     console.log(
-      "nominatim: reverse geocode failure"
+      "nominatim: reverse geocode failure, calling fallback"
     );
-
+try{
     const results = await Promise.allSettled(
 
       joiningCoordinatesWithDistance.map(
@@ -178,7 +178,7 @@ const getreverseGeocode = async (
                   "User-Agent": "route-planner/1.0",
                   Accept: "application/json",
                 },
-                timeout:3000,
+                timeout:6000,
               }
             );
 
@@ -222,7 +222,10 @@ const getreverseGeocode = async (
       finalETA,
       vcfinalDate
     );
-  }
+  }catch(error){
+    console.log("geoapify reverse geocode also failed.")
+  } 
+}
 };
 
 function processCities(

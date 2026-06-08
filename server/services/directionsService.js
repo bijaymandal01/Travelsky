@@ -6,27 +6,6 @@ const getEntireRoute = async (
     end
 )=>{
 try{
-    const directionApiResponse = 
-    await axios.get(` https://router.project-osrm.org/route/v1/driving/${start.lon},${start.lat};${end.lon},${end.lat}`,
-        {
-            params: {
-                overview: "full",
-                geometries: "geojson"
-            },
-        }
-    )
-    return {
-        distance : directionApiResponse.data.routes[0].distance,
-        duration :directionApiResponse.data.routes[0].duration,
-        coordinates : directionApiResponse.data.routes[0].geometry.coordinates,
-    }
-
-
-}catch(error){
-
-    console.log(` distance api failed. switching to fallback`)
-
-
 
         const directionApiResponse =
         await axios.post(
@@ -47,12 +26,36 @@ try{
             },
         }
     )
+
+
  
     return {
         distance : directionApiResponse.data.features[0].properties.summary.distance,
         duration : directionApiResponse.data.features[0].properties.summary.duration,
         coordinates : directionApiResponse.data.features[0].geometry.coordinates,
     }
+
+
+
+
+}catch(error){
+
+    console.log(` openrouteservice api failed. switching to fallback`)
+    const directionApiResponse = 
+    await axios.get(`https://router.project-osrm.org/route/v1/driving/${start.lon},${start.lat};${end.lon},${end.lat}`,
+        {
+            params: {
+                overview: "full",
+                geometries: "geojson"
+            },
+        }
+    )
+    return {
+        distance : directionApiResponse.data.routes[0].distance,
+        duration :directionApiResponse.data.routes[0].duration,
+        coordinates : directionApiResponse.data.routes[0].geometry.coordinates,
+    }
+
 
 
 }

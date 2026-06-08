@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import posthog from "posthog-js";
+import PopularRoutes from "../layouts/PopularRoute";
 
 export default function SearchPanel() {
 
@@ -26,7 +28,26 @@ export default function SearchPanel() {
   const handleSearch = (e) => {
 
     e.preventDefault();
-
+    
+    //google analytics tracking code integration
+    if (window.gtag) {
+        window.gtag("event", "search_route", {
+          from,
+          to,
+          date,
+        });
+      }
+//.........................................................
+//postHog tracking integration 
+    posthog.capture(
+      "search_route",
+      {
+        from,
+        to,
+        date,
+      }
+    );
+//.........................................................
     // Save form values
     sessionStorage.setItem(
       "searchForm",
@@ -46,73 +67,83 @@ export default function SearchPanel() {
 
   return (
 
-    <form
-      className="card"
-      onSubmit={handleSearch}
+<form
+  className="bg-white rounded-3xl shadow-xl border border-slate-200 p-6 lg:p-8"
+  onSubmit={handleSearch}
+>
+
+  <h3 className="text-2xl font-bold text-slate-800 mb-2">
+    Plan Your Journey
+  </h3>
+
+  <p className="text-slate-500 text-sm mb-6">
+    Check weather conditions across your entire route.
+  </p>
+
+  <div className="space-y-4">
+
+    <input
+      type="text"
+      placeholder="From"
+      className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+      value={from}
+      onChange={(e) => setFrom(e.target.value)}
+      required
+    />
+
+    <input
+      type="text"
+      placeholder="To"
+      className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+      value={to}
+      onChange={(e) => setTo(e.target.value)}
+      required
+    />
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <div>
+        <label className="block text-sm font-medium text-slate-600 mb-2">
+          Departure Date
+        </label>
+
+        <input
+          type="date"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-600 mb-2">
+          Departure Time
+        </label>
+
+        <input
+          type="time"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          required
+        />
+      </div>
+
+    </div>
+
+    <button
+      type="submit"
+      className="w-full bg-blue-600 hover:bg-sky-700 text-white font-semibold py-3 rounded-xl transition-all duration-200 shadow-md"
     >
+      Search Route Weather
+    </button>
 
-      <h4 className="h4 mb-2">
-        Plan Your Journey
-      </h4>
+  </div>
+<PopularRoutes setTo={setTo} />
 
-      <input
-        type="text"
-        placeholder="From"
-        className="input mb-2"
-        value={from}
-        onChange={(e) =>
-          setFrom(e.target.value)
-        }
-        required
-      />
+</form>
 
-      <input
-        type="text"
-        placeholder="To"
-        className="input mb-3"
-        value={to}
-        onChange={(e) =>
-          setTo(e.target.value)
-        }
-        required
-      />
-
-      <h6>
-        Departure Date
-      </h6>
-
-      <input
-        type="date"
-        className="input mb-3"
-        value={date}
-        onChange={(e) =>
-          setDate(e.target.value)
-        }
-        required
-      />
-
-      <h6>
-        Departure Time
-      </h6>
-
-      <input
-        type="time"
-        className="input mb-3"
-        value={time}
-        onChange={(e) =>
-          setTime(e.target.value)
-        }
-        required
-      />
-
-      <button
-        className="btn btn-primary btn-full"
-        type="submit"
-      >
-        Search Route Weather
-      </button>
-
-    </form>
 
   );
 

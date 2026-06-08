@@ -11,7 +11,7 @@ const getWeather = async (
 
     try {
             const limit = pLimit(3);
-        console.log('visual crossing key =>'+ process.env.VISUALCROSSING_KEY)
+        // console.log('visual crossing key =>'+ process.env.VISUALCROSSING_KEY)
         const weatherResults = await Promise.allSettled(
 
             uniqueCities.map( (city) =>

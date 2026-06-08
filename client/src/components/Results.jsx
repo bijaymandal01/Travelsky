@@ -7,9 +7,8 @@ import TravelScoreCard from "./TravelScoreCard";
 import WeatherHighlights from "./WeatherHighlights";
 import ConditionsOverview from "./ConditionsOverview";
 import JourneyTimeline from "./JourneyTimeline";
-import RiskChart from "./RiskChart";
-import CheckpointTable from "./CheckpointTable";
 import LoadingScreen from "./LoadingScreen";
+import posthog from "posthog-js";
 
 const Results = () => {
   const [route, setRoute] = useState(null);
@@ -35,9 +34,43 @@ const Results = () => {
           }
         );
 
+        // Google analytics Success Event
+        if (window.gtag) {
+          window.gtag("event", "results_loaded", {
+            from,
+            to,
+          });
+        }
+        //posthogsuccess event tracking
+        posthog.capture(
+          "results_loaded",
+          {
+            from,
+            to,
+          }
+        );
+
         setRoute(response.data);
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error);
+
+        // Google anytics Failure Event
+        if (window.gtag) {
+          window.gtag("event", "results_failed", {
+            from,
+            to,
+          });
+        }
+          //posthog failure event tracking
+          posthog.capture(
+          "results_failed",
+          {
+            from,
+            to,
+          }
+        );
+
       } finally {
         setLoading(false);
       }
@@ -55,45 +88,31 @@ const Results = () => {
   }
 
   return (
-    <>
-      <div className="p-6">
-        <div className="grid grid-cols-12 gap-6">
+    <div className="p-6">
+      <div className="grid grid-cols-12 gap-6">
 
-          {/* Top Row */}
-          <div className="col-span-12 lg:col-span-8">
-            <RouteInfo routeSummary={route.weathersInYourRoute} />
-          </div>
-
-          <div className="col-span-12 lg:col-span-4">
-            <TravelScoreCard routeSummary={route.weathersInYourRoute} />
-          </div>
-
-          {/* Second Row */}
-         <div className="col-span-12">
-            <WeatherHighlights routeSummary={route.weathersInYourRoute} />
-          </div>
-
-          <div className="col-span-12">
-            <ConditionsOverview routeSummary={route.weathersInYourRoute} />
-          </div>
-
-          {/* Timeline */}
-          <div className="col-span-12">
-            <JourneyTimeline routeSummary={route.weathersInYourRoute} />
-          </div>
-
-          {/* // Optional Components
-          <div className="col-span-12">
-            <RiskChart routeSummary={route.weathersInYourRoute} />
-          </div>
-
-          <div className="col-span-12">
-            <CheckpointTable routeSummary={route.weathersInYourRoute} />
-          </div> */}
-
+        <div className="col-span-12 lg:col-span-8">
+          <RouteInfo routeSummary={route.weathersInYourRoute} />
         </div>
+
+        <div className="col-span-12 lg:col-span-4">
+          <TravelScoreCard routeSummary={route.weathersInYourRoute} />
+        </div>
+
+        <div className="col-span-12">
+          <WeatherHighlights routeSummary={route.weathersInYourRoute} />
+        </div>
+
+        <div className="col-span-12">
+          <ConditionsOverview routeSummary={route.weathersInYourRoute} />
+        </div>
+
+        <div className="col-span-12">
+          <JourneyTimeline routeSummary={route.weathersInYourRoute} />
+        </div>
+
       </div>
-    </>
+    </div>
   );
 };
 

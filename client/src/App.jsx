@@ -6,16 +6,19 @@ import {
 
 import Home from "./Pages/Home";
 import Results from "./components/Results";
+import Navbar from "./components/Navbar";
 
 function App() {
 
-  return (
-      <BrowserRouter>
+  return (<>
+    <Navbar/>
+
         <Routes  >
           <Route path='/' element={<Home/>} />
-          <Route path='/results' element={<Results/>} />
+          <Route path="/results" element={<Results/>}/>
         </Routes>
-      </BrowserRouter>
+  </>
+
   );
 }
 

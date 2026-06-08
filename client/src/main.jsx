@@ -5,11 +5,14 @@ import App from "./App";
 
 import "./index.css";
 import "./App.css";
-
+import "./utils/posthog"
+import { BrowserRouter } from "react-router-dom";
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
-  // <React.StrictMode>
+  <BrowserRouter>
+  {/* <React.StrictMode> */}
     <App />
-  // {/* </React.StrictMode> */}
+   {/* </React.StrictMode> */}
+  </BrowserRouter>
 );

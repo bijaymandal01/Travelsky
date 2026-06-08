@@ -44,13 +44,10 @@ const RouteInfo = ({ routeSummary }) => {
   ];
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5 md:p-6">
+    <div className="bg-white rounded-3xl border border-black shadow-sm p-5 md:p-6">
 
       {/* Route Header */}
       <div className="mb-6">
-        <p className="text-2xl font-bold text-slate-500 mb-1">
-          Journey Overview
-        </p>
 
         <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
           {routeSummary.route.start}
@@ -65,7 +62,7 @@ const RouteInfo = ({ routeSummary }) => {
         {cards.map((card, index) => (
           <div
             key={index}
-            className="group rounded-2xl border border-slate-100 bg-slate-50 p-4 hover:shadow-md hover:bg-white transition-all duration-300"
+            className="group rounded-2xl border border-slate-100 bg-slate-50 p-4 "
           >
             <div className="flex items-start justify-between mb-3">
 

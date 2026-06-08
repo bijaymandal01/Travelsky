@@ -1,31 +1,40 @@
 import SearchPanel from "./SearchPanel";
 
 function Hero() {
-
   return (
+    <section className=" from-sky-50 to-white py-12 lg:py-20">
 
-    <section className="section">
+      <div className="max-w-7xl mx-auto px-4">
 
-      <div className="container">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-        <div className="grid grid-2 gap-3">
-
+          {/* Left Side */}
           <div>
 
-            <h1 className="h1 mb-2">
-              Smart Route Weather Forecast
+            <span className="inline-flex items-center rounded-full bg-sky-100 px-4 py-2 text-sm font-medium text-sky-700 mb-5">
+              Smart Travel Weather Planning
+            </span>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+              Route Weather Intelligence
+              <span className="block text-blue-600">
+                For Better Planning on Travel
+              </span>
             </h1>
 
-            <p className="p mb-1">
-
-              weather updates
-              across your entire journey.
-
+            <p className="mt-6 text-lg text-slate-600 max-w-xl">
+              Get weather forecasts, rain alerts,
+              visibility warnings and travel insights
+              across your entire route before departure.
             </p>
+
 
           </div>
 
-          <SearchPanel />
+          {/* Right Side */}
+          <div>
+            <SearchPanel />
+          </div>
 
         </div>
 

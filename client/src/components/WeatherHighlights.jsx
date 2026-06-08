@@ -72,7 +72,7 @@ const WeatherHighlights = ({ routeSummary }) => {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+    <div className="bg-white rounded-2xl border border-black shadow-sm p-5">
 
       <h2 className="text-lg font-bold text-slate-800 mb-4">
         Weather Highlights
