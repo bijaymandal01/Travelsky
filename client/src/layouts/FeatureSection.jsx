@@ -24,7 +24,7 @@ export default function FeatureSection() {
       icon: "📍",
       title: "Journey Timeline",
       description:
-        "View weather conditions checkpoint by checkpoint.",
+        "View weather conditions district by district.",
     },
     {
       icon: "⚠️",

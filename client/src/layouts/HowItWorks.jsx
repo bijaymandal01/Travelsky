@@ -12,7 +12,7 @@ export default function HowItWorks() {
       number: "02",
       title: "We Analyze The Journey",
       description:
-        "TravelSky checks weather conditions at checkpoints across the entire route.",
+        "TravelSky checks weather conditions of districts across the entire route.",
     },
     {
       number: "03",
