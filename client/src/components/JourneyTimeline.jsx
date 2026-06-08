@@ -31,7 +31,10 @@ const JourneyTimeline = ({
         <a
             href={`https://www.google.com/maps/dir/${start}/${destination}`}
             target="_blank"
-            className="px-4 py-2 bg-blue-600 text-white rounded-xl"
+            className="px-2 py-1 text-[11px]
+                sm:px-3 sm:py-1.5 sm:text-sm
+                 bg-blue-600 text-white rounded-xl"
+
         >
             View On Map
           </a>
