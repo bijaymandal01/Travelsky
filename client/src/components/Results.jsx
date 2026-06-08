@@ -108,7 +108,11 @@ const Results = () => {
         </div>
 
         <div className="col-span-12">
-          <JourneyTimeline routeSummary={route.weathersInYourRoute} />
+          <JourneyTimeline 
+          routeSummary={route.weathersInYourRoute} 
+            start={route.weathersInYourRoute.route.start}
+            destination={route.weathersInYourRoute.route.destination}
+          />
         </div>
 
       </div>

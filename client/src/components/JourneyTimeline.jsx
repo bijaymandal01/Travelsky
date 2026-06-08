@@ -1,6 +1,11 @@
 import React from "react";
 
-const JourneyTimeline = ({ routeSummary }) => {
+const JourneyTimeline = ({
+   routeSummary,
+   start,
+   destination
+
+}) => {
   if (!routeSummary?.checkpoints) return null;
 
   const getWeatherIcon = (condition = "") => {
@@ -23,9 +28,13 @@ const JourneyTimeline = ({ routeSummary }) => {
           Journey Timeline
         </h2>
 
-        <button className="px-4 py-2 text-sm border border-blue-200 rounded-lg text-blue-600 hover:bg-blue-50">
-          View on Map
-        </button>
+        <a
+            href={`https://www.google.com/maps/dir/${start}/${destination}`}
+            target="_blank"
+            className="px-4 py-2 bg-blue-600 text-white rounded-xl"
+        >
+            View On Map
+          </a>
 
       </div>
 
