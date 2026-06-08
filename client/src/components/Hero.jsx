@@ -23,9 +23,7 @@ function Hero() {
             </h1>
 
             <p className="mt-6 text-lg text-slate-600 max-w-xl">
-              Get weather forecasts, rain alerts,
-              visibility warnings and travel insights
-              across your entire route before departure.
+              It's Your Journey. Plan It Smarter. 
             </p>
 
 
