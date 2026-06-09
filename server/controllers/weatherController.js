@@ -125,9 +125,21 @@ let adjustedDurationSeconds =
     }else if(distance<=200){
       adjustedDurationSeconds += 2* 60*60;
 
+    }else if(distance<=600){
+      adjustedDurationSeconds += 4* 60*60;
+
     }
+    else if(distance<=1200){
+      adjustedDurationSeconds += 6* 60*60;
+
+    }
+      else if(distance<=1600){
+      adjustedDurationSeconds += 10* 60*60;
+
+    }
+
     else {
-      adjustedDurationSeconds += 3 * 60*60;
+      adjustedDurationSeconds +=  10* 60*60;
     }
 
 const duration = {

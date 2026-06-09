@@ -36,6 +36,34 @@ const getCoordinatesOfPointAPointB = async(place)=>{
 
         try {
             const geocodeResponse = await axios.get(
+                    "https://geocoding-api.open-meteo.com/v1/search",
+                    {
+                        params: {
+                        name: place,
+                        count: 1,
+                        language: "en",
+                        format: "json"
+                        }
+                    }
+                    );
+
+                    const result =
+                    geocodeResponse.data.results?.[0];
+
+                    return {
+                    lat: result.latitude,
+                    lon: result.longitude,
+                    city: result.name
+                    };
+
+
+
+            
+        } catch (error) {
+
+        console.log(`open-meteo geocode failed.`)
+
+            const geocodeResponse = await axios.get(
                 `https://api.geoapify.com/v1/geocode/search`,
                 { 
                     params:{
@@ -50,10 +78,11 @@ const getCoordinatesOfPointAPointB = async(place)=>{
                 }
             )
 
-            
-        } catch (error) {
-        console.log(`Geoaplify geocode failed.`)
+            return {
+                lon:geocodeResponse.data.results?.[0].lon,
+                lat:geocodeResponse.data.results?.[0].lat,
 
+            }
             
         }
 
