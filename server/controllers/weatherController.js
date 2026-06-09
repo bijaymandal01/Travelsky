@@ -9,7 +9,6 @@ require("dotenv").config();
 
 const getTravelWeather = async (req, res) => {
   try {
-    console.log(process.env.OPENROUTE_API);
     console.log(req.body);
 
     const { from, to, date, time } = req.body;
@@ -115,12 +114,28 @@ const getTravelWeather = async (req, res) => {
     const distance = Number(((distanceAndDurationCoordinatesARRAY[0].distance)/1000).toFixed(2))
     console.log(distance + " km")
     
-    const totalSeconds = distanceAndDurationCoordinatesARRAY[0].duration + (3 * 3600); // add 3 hrs
+      const totalRouteDurationINSeconds =
+  distanceAndDurationCoordinatesARRAY[0].duration;
 
-    const duration = {
-      hrs: Math.floor(totalSeconds / 3600),
-      min: Math.floor((totalSeconds % 3600) / 60)
-    };
+let adjustedDurationSeconds =
+  totalRouteDurationINSeconds;
+
+    if (distance <=100){
+      adjustedDurationSeconds += 60*30;
+    }else if(distance<=200){
+      adjustedDurationSeconds += 2* 60*60;
+
+    }
+    else {
+      adjustedDurationSeconds += 3 * 60*60;
+    }
+
+const duration = {
+  hrs: Math.floor(adjustedDurationSeconds / 3600),
+  min: Math.floor(
+    (adjustedDurationSeconds % 3600) / 60
+  )
+};
 
     console.log(duration);
     
@@ -152,7 +167,7 @@ const getTravelWeather = async (req, res) => {
     date,
     time,
     distance,
-    distanceAndDurationCoordinatesARRAY[0].duration,
+   adjustedDurationSeconds,
     
   )
   //..................................................................
@@ -241,8 +256,8 @@ const getTravelWeather = async (req, res) => {
           distanceAndDurationCoordinatesARRAY[0].distance / 1000
         ),
         distanceAndDurationCoordinatesARRAY[0].coordinates,
-        date,   // NEW
-        time    // NEW
+        date,   
+        time    
       );  
   // console.log("joiningCoordinatesWithDistance");
   // console.log(joiningCoordinatesWithDistance);

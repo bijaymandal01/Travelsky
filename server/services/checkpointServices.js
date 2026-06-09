@@ -23,8 +23,8 @@ const generateCheckpoints  =(
     checkpointDistanceKm.push(0)
     checkpointTimeMinutes.push(0);
 
-    const totalDurationMinutes =
-  (duration / 60) + 180; // your +3 hrs
+const totalDurationMinutes =
+  duration / 60; 
 
     const intervalTimeMinutes =
       totalDurationMinutes / (numberOfCheckpoints + 1);

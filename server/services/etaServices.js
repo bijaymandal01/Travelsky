@@ -4,15 +4,12 @@ const getfinalETA =(
     distance,
     duration,
 )=>{    
-    const totalSeconds = duration + (3 * 3600);
-    const durationHRSandMIN = {
-      hrs: Math.floor(totalSeconds / 3600),
-      min: Math.floor((totalSeconds % 3600) / 60)
-    };
+  
+    const totalSeconds = duration;
+
     const distanceInHRS = distance/1000
     const timeInMIN = duration/(60*60)
-    const speed = distanceInHRS/timeInMIN;
-    console.log("speed " + speed );
+
     const departureTime = new Date(`${date}T${time}:00`);
 
     const arrivalTime = new Date(
@@ -31,7 +28,6 @@ const getfinalETA =(
       }
     );
     return{
-        durationHRSandMIN,
         finalETA,
     }
 

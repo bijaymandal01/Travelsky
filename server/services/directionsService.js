@@ -19,11 +19,13 @@ try{
             avoid_borders: "all"
             }
         },
+        
         {
             headers: {
             Authorization: process.env.OPENROUTE_API,
             "Content-Type": "application/json"
             },
+
         }
     )
 
@@ -40,7 +42,7 @@ try{
 
 }catch(error){
 
-    console.log(` openrouteservice api failed. switching to fallback`)
+    console.log(` openrouteservice direction api failed. switching to fallback`)
     const directionApiResponse = 
     await axios.get(`https://router.project-osrm.org/route/v1/driving/${start.lon},${start.lat};${end.lon},${end.lat}`,
         {

@@ -4,34 +4,6 @@ require("dotenv").config()
 
 const getCoordinatesOfPointAPointB = async(place)=>{
     try{
-            const geocodeResponse = await axios.get(
-                `https://api.openrouteservice.org/geocode/search`,
-                {
-                    params: {
-                        api_key: process.env.OPENROUTE_API,
-                        text: place,
-                        "boundary.country": "IN",
-                        layers: "venue,address",
-                        size: 1,
-                    },
-                    timeout : 3000,
-                }
-            );
-
-            return {
-                lon : geocodeResponse.data.features[0].geometry.coordinates[0],
-                lat : geocodeResponse.data.features[0].geometry.coordinates[1]
-        };
-
-
-            
-        
-        
-    }catch(error){
-
-        console.log(`openrouteservice is slow. switching to fallback `)
-
-        try {
             const geocodeResponse= await axios.get(
             `https://nominatim.openstreetmap.org/search`,
             {
@@ -53,8 +25,35 @@ const getCoordinatesOfPointAPointB = async(place)=>{
             lat :Number(geocodeResponse.data[0].lat)
         }
             
+
+
+            
+        
+        
+    }catch(error){
+
+        console.log(`nominatim failed.`)
+
+        try {
+            const geocodeResponse = await axios.get(
+                `https://api.geoapify.com/v1/geocode/search`,
+                { 
+                    params:{
+                        text:place,
+                        lang:"en",
+                        limit:10,
+                        type : "city",
+                        format:"json",
+                        apiKey : process.env.GEOAPIFY_KEY,
+                    },
+                    timeout:3000,
+                }
+            )
+
+            
         } catch (error) {
-            console.log(`nominatim failed.`)
+        console.log(`Geoaplify geocode failed.`)
+
             
         }
 
