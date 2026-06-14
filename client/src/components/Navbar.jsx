@@ -36,17 +36,17 @@ export default function Navbar() {
             </Link>
 
             <Link
-              to="/about"
+              to="/how-it-works"
               className="text-slate-600 hover:text-sky-600 transition"
             >
-              About
+              How It Works
             </Link>
 
             <Link
-              to="/services"
+              to="/features"
               className="text-slate-600 hover:text-sky-600 transition"
             >
-              Services
+              Features
             </Link>
 
             <Link

@@ -122,12 +122,8 @@ let adjustedDurationSeconds =
 
     if (distance <=100){
       adjustedDurationSeconds += 60*30;
-    }else if(distance<=200){
+    }else if(distance<=500){
       adjustedDurationSeconds += 2* 60*60;
-
-    }else if(distance<=600){
-      adjustedDurationSeconds += 4* 60*60;
-
     }
     else if(distance<=1200){
       adjustedDurationSeconds += 6* 60*60;
