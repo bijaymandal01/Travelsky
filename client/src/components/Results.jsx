@@ -9,6 +9,7 @@ import ConditionsOverview from "./ConditionsOverview";
 import JourneyTimeline from "./JourneyTimeline";
 import LoadingScreen from "./LoadingScreen";
 import posthog from "posthog-js";
+import NoDataFoundPage from "../Pages/NoDataFoundPage";
 
 const Results = () => {
   const [route, setRoute] = useState(null);
@@ -84,7 +85,7 @@ const Results = () => {
   }
 
   if (!route) {
-    return <h2>No Data Found</h2>;
+    return <NoDataFoundPage/> ;
   }
 
   return (

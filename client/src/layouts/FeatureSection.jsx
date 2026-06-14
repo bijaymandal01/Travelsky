@@ -41,7 +41,7 @@ export default function FeatureSection() {
   ];
 
   return (
-    <section className="py-20 bg-slate-50">
+    <section id='features' className="py-20 bg-slate-50">
 
       <div className="max-w-7xl mx-auto px-4">
 

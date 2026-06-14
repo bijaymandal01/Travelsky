@@ -58,9 +58,12 @@ export default function SearchPanel() {
         time,
       })
     );
+    const From_WhichPlaceof_INDIA =`${from},India`;
+    const To_WhichPlaceof_INDIA =`${to},India`;
+    
 
     navigate(
-      `/results?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}&time=${time}`
+      `/results?from=${encodeURIComponent(From_WhichPlaceof_INDIA)}&to=${encodeURIComponent(To_WhichPlaceof_INDIA)}&date=${date}&time=${time}`
     );
 
   };
