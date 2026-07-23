@@ -50,16 +50,10 @@ const RouteInfo = ({ routeSummary }) => {
 
       {/* Route Header */}
       <div className="mb-6">
-        <h1 className="text-xl text-center md:text-3xl font-bold text-slate-800 flex flex-col md:flex-row md:items-center md:justify-center gap-2 ">
+        <h1 className="text-lg text-center break-all md:text-3xl font-bold text-slate-800 flex flex-col md:flex-row md:items-center md:justify-center gap-2 ">
 
             {displayStart}  
-
-
-          <span className="text-slate-400 text-center">
             →
-          </span>
-
-
             {displayDestination}
 
         </h1>
