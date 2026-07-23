@@ -2,7 +2,7 @@ import SearchPanel from "./SearchPanel";
 
 function Hero() {
   return (
-    <section className=" from-sky-50 to-white py-12 lg:py-20">
+    <section className=" from-sky-50 to-white py-12 lg:py-2 ">
 
       <div className="max-w-7xl mx-auto px-4">
 

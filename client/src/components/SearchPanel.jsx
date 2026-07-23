@@ -28,7 +28,8 @@ export default function SearchPanel() {
   const handleSearch = (e) => {
 
     e.preventDefault();
-    
+    console.log(from)
+    console.log(to)
     //google analytics tracking code integration
     if (window.gtag) {
         window.gtag("event", "search_route", {
@@ -58,6 +59,7 @@ export default function SearchPanel() {
         time,
       })
     );
+
     const From_WhichPlaceof_INDIA =`${from},India`;
     const To_WhichPlaceof_INDIA =`${to},India`;
     
@@ -84,24 +86,38 @@ export default function SearchPanel() {
   </p>
 
   <div className="space-y-4">
+    <div>
 
-    <input
-      type="text"
-      placeholder="From"
-      className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
-      value={from}
-      onChange={(e) => setFrom(e.target.value)}
-      required
-    />
+      <div>
+        <label className="block text-sm font-medium text-slate-600 mb-2">
+          From
+        </label>
+        <input
+          type="text"
+          placeholder="Starting location (e.g.,city, district)"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          required
+        />
+      </div>
+    </div>
+    <div>
 
-    <input
-      type="text"
-      placeholder="To"
-      className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
-      value={to}
-      onChange={(e) => setTo(e.target.value)}
-      required
-    />
+      <div>
+        <label className="block text-sm font-medium text-slate-600 mb-2">
+          To
+        </label>
+        <input
+          type="text"
+          placeholder="Destination (e.g.,city, district)"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          required
+        />
+      </div>
+    </div>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
