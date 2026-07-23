@@ -22,7 +22,9 @@ const Results = () => {
   const date = searchParams.get("date");
   const time = searchParams.get("time");
 
+
   useEffect(() => {
+    
     const fetchWeatherData = async () => {
       try {
         const response = await axios.post(

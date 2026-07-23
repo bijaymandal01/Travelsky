@@ -15,6 +15,8 @@ const RouteInfo = ({ routeSummary }) => {
     minute: "2-digit",
     hour12: true,
   });
+  const displayStart = routeSummary.route.start?.replace(",India", "").toUpperCase();
+  const displayDestination = routeSummary.route.destination?.replace(",India", "").toUpperCase();
 
   const cards = [
     {
@@ -48,12 +50,21 @@ const RouteInfo = ({ routeSummary }) => {
 
       {/* Route Header */}
       <div className="mb-6">
+        <h1 className="text-xl text-center md:text-3xl font-bold text-slate-800 flex flex-col md:flex-row md:items-center md:justify-center gap-2 ">
 
-        <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
-          {routeSummary.route.start}
-          <span className="mx-3 text-slate-400">→</span>
-          {routeSummary.route.destination}
+            {displayStart}  
+
+
+          <span className="text-slate-400 text-center">
+            →
+          </span>
+
+
+            {displayDestination}
+
         </h1>
+
+        
       </div>
 
       {/* Metrics */}
