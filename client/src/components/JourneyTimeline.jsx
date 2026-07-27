@@ -19,7 +19,7 @@ const JourneyTimeline = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-black shadow-sm p-5">
+    <div className="bg-white rounded-2xl border border-black shadow-sm p-3">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -28,16 +28,19 @@ const JourneyTimeline = ({
           Journey Timeline
         </h2>
 
-        <a
-            href={`https://www.google.com/maps/dir/${start}/${destination}`}
-            target="_blank"
-            className="px-2 py-1 text-[11px]
-                sm:px-3 sm:py-1.5 sm:text-sm
-                 bg-blue-600 text-white rounded-xl"
+    <a
+      href={`https://www.google.com/maps/dir/${start}/${destination}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/40 hover:bg-blue-700 transition"
+    >
+      <span className="relative flex h-2.5 w-2.5">
+        <span className="absolute inset-0 rounded-full bg-yellow-400 animate-ping"></span>
+        <span className="relative h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
+      </span>
 
-        >
-            View On Map
-          </a>
+      Live Map <span className="material-symbols-outlined text-[18px]">north_east</span>
+    </a>
 
       </div>
 
