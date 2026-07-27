@@ -49,19 +49,32 @@ const RouteInfo = ({ routeSummary }) => {
     <div className="bg-white rounded-3xl border border-black shadow-sm p-5 md:p-6">
 
       {/* Route Header */}
-      <div className="mb-6">
-        <h1 className="text-lg text-center break-all md:text-3xl font-bold text-slate-800 flex flex-col md:flex-row md:items-center md:justify-center gap-2 ">
-
-            {displayStart}  
-            →
-            {displayDestination}
-
+      <div className="mb-6 md:flex md:justify-between">
+        <h1 className="text-lg text-center break-all md:text-3xl font-bold text-slate-800 flex flex-col md:flex-row md:items-center md:justify-center gap-2">
+          {displayStart}
+          →
+          {displayDestination}
         </h1>
 
-        
+        <a
+          href={`https://www.google.com/maps/dir/${displayStart}/${displayDestination}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:inline-flex mt-4 items-center gap-2 px-3 py-2 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/40 hover:bg-blue-700 transition"
+        >
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inset-0 rounded-full bg-yellow-400 animate-ping"></span>
+            <span className="relative h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
+          </span>
+
+          View Live Map <span className="material-symbols-outlined text-[18px]">north_east</span>
+        </a>
       </div>
 
       {/* Metrics */}
+      <div>
+        
+
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
 
         {cards.map((card, index) => (
@@ -89,6 +102,22 @@ const RouteInfo = ({ routeSummary }) => {
           </div>
         ))}
 
+      </div>
+<div className="flex justify-center mt-5 md:hidden">
+  <a
+    href={`https://www.google.com/maps/dir/${displayStart}/${displayDestination}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex w-full max-w-xs justify-center items-center gap-2 px-4 py-3 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/40 hover:bg-blue-700 transition"
+  >
+    <span className="relative flex h-2.5 w-2.5">
+      <span className="absolute inset-0 rounded-full bg-yellow-400 animate-ping"></span>
+      <span className="relative h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
+    </span>
+
+    View Live Map <span className="material-symbols-outlined text-[18px]">north_east</span>
+  </a>
+</div>
       </div>
     </div>
   );
